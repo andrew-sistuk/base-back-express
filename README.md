@@ -1,5 +1,13 @@
 # Main changes
 
+## Preinstall
+
+1. add to .gitignore
+    ```
+   .env
+   .prettierrc
+   ```
+
 ## Settings
 
 1. ...
@@ -12,6 +20,8 @@
 4. mongoose
 5. pino-http
 6. pino-pretty
+7. http-errors
+8. joi
 
 ## Code
 
@@ -24,3 +34,5 @@
 ## Future features
 
 1) add jsconfig.js
+2) add pagination from external library
+3)

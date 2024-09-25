@@ -1,12 +1,22 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
+import env from './utils/env.js';
+import eventsRouter from './routers/events.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
-const PORT = process.env.PORT || 3003;
-const app = express();
+const PORT = Number(env('PORT', 3004));
 
 export default function startServer() {
-  app.use(express.json());
+  const app = express();
+
+  app.use(
+    express.json({
+      type: ['application/json', 'application/vnd.api+json'],
+    }),
+  );
+  app.use(cors());
 
   app.use(
     pino({
@@ -16,26 +26,11 @@ export default function startServer() {
     }),
   );
 
-  app.use(cors());
+  app.use(eventsRouter);
 
-  app.get('/', (req, res) => {
-    res.json({
-      message: 'Hello world!',
-    });
-  });
+  app.use('*', notFoundHandler);
 
-  app.use('*', (req, res) => {
-    res.status(404).json({
-      message: 'Route not found',
-    });
-  });
-
-  app.use((err, req, res) => {
-    res.status(500).json({
-      message: 'Something went wrong',
-      error: err.message,
-    });
-  });
+  app.use(errorHandler);
 
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
