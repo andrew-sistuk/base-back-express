@@ -2,11 +2,8 @@
 
 ## Preinstall
 
-1. add to .gitignore
-    ```
-   .env
-   .prettierrc
-   ```
+
+1. ...
 
 ## Settings
 
