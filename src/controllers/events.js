@@ -1,9 +1,19 @@
 import { getAllEvents, getEventByID } from '../services/events.js';
 import createHttpError from 'http-errors';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
-export const getAllEventsController = async (_, res) => {
-  const events = await getAllEvents();
+export const getAllEventsController = async (req, res) => {
+  const { page, perPage } = parsePaginationParams(req.query);
+
+  // console.log('-------------------------', req.query);
+
+  const events = await getAllEvents({
+    page,
+    perPage,
+  });
   res.json({
+    status: 200,
+    message: 'Successfully found events!',
     data: events,
   });
 };
